@@ -1,0 +1,268 @@
+import { motion, type HTMLMotionProps, type TargetAndTransition, type VariantLabels } from 'framer-motion';
+import { forwardRef } from 'react';
+import { clsx } from 'clsx';
+
+interface GlassCardProps extends Omit<HTMLMotionProps<'div'>, 'ref'> {
+  variant?: 'default' | 'elevated' | 'subtle' | 'outlined';
+  className?: string;
+  children: React.ReactNode;
+  whileHover?: TargetAndTransition | VariantLabels;
+}
+
+export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
+  ({ variant = 'default', className, children, whileHover, ...props }, ref) => {
+    const variants = {
+      default: 'card',
+      elevated: 'card-elevated',
+      subtle: 'card-subtle',
+      outlined: 'card',
+    };
+
+    return (
+      <motion.div
+        ref={ref}
+        className={clsx(variants[variant], className)}
+        whileHover={whileHover}
+        {...props}
+      >
+        {children}
+      </motion.div>
+    );
+  }
+);
+
+GlassCard.displayName = 'GlassCard';
+
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  isLoading?: boolean;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+  fullWidth?: boolean;
+}
+
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ variant = 'primary', size = 'md', isLoading, leftIcon, rightIcon, className, disabled, children, fullWidth, ...props }, ref) => {
+    const variants = {
+      primary: 'btn btn-primary',
+      secondary: 'btn btn-secondary',
+      ghost: 'btn btn-ghost',
+      danger: 'btn btn-danger',
+      outline: 'btn btn-outline',
+    };
+
+    const sizes = {
+      sm: 'btn-sm',
+      md: 'btn-md',
+      lg: 'btn-lg',
+      xl: 'btn-xl',
+    };
+
+    return (
+      <motion.button
+        ref={ref}
+        className={clsx(variants[variant], sizes[size], fullWidth && 'w-full', className)}
+        disabled={disabled || isLoading}
+        whileTap={{ scale: 0.98 }}
+        {...(props as Record<string, unknown>)}
+      >
+        {isLoading ? (
+          <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" fill="none" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+          </svg>
+        ) : leftIcon ? (
+          <span aria-hidden="true">{leftIcon}</span>
+        ) : null}
+        {children}
+        {!isLoading && rightIcon && <span aria-hidden="true">{rightIcon}</span>}
+      </motion.button>
+    );
+  }
+);
+
+Button.displayName = 'Button';
+
+interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
+  variant?: 'default' | 'success' | 'warning' | 'danger' | 'info' | 'ai';
+  size?: 'sm' | 'md' | 'lg';
+  dot?: boolean;
+  pulse?: boolean;
+  className?: string;
+}
+
+export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
+  ({ variant = 'default', size = 'md', dot, pulse, className, children, ...props }, ref) => {
+    const variants = {
+      default: 'badge badge-default',
+      success: 'badge badge-success',
+      warning: 'badge badge-warning',
+      danger: 'badge badge-danger',
+      info: 'badge badge-info',
+      ai: 'badge badge-ai',
+    };
+
+    const sizes = {
+      sm: 'badge-sm',
+      md: '',
+      lg: 'badge-lg',
+    };
+
+    return (
+      <span
+        ref={ref}
+        className={clsx(variants[variant], sizes[size], dot && 'badge-dot', pulse && 'animate-pulse-ring', className)}
+        {...props}
+      >
+        {children}
+      </span>
+    );
+  }
+);
+
+Badge.displayName = 'Badge';
+
+export interface ScanLineProps {
+  className?: string;
+  speed?: number;
+  color?: 'green' | 'cyan';
+}
+
+export function ScanLine({ className, speed = 3, color = 'green' }: ScanLineProps) {
+  const colors = {
+    green: 'from-transparent via-brand/60 to-transparent',
+    cyan: 'from-transparent via-brand-light/60 to-transparent',
+  };
+
+  return (
+    <div
+      className={clsx(
+        'absolute left-0 right-0 h-0.5 bg-gradient-to-r animate-scan-line',
+        colors[color],
+        'pointer-events-none',
+        className
+      )}
+      style={{ animationDuration: `${speed}s` }}
+      aria-hidden="true"
+    />
+  );
+}
+
+export interface CornerMarkersProps {
+  className?: string;
+  color?: 'green' | 'cyan' | 'white' | 'amber' | 'red';
+  animated?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+export function CornerMarkers({ className, color = 'green', animated = false, size = 'md' }: CornerMarkersProps) {
+  const colors = {
+    green: 'border-brand/50',
+    cyan: 'border-brand-light/50',
+    white: 'border-fg/20',
+    amber: 'border-amber-primary/50',
+    red: 'border-red-primary/50',
+  };
+
+  const sizes = {
+    sm: 'w-3 h-3 border-1.5',
+    md: 'w-4 h-4 border-2',
+    lg: 'w-5 h-5 border-2.5',
+  };
+
+  const borderColor = colors[color];
+  const sizeClass = sizes[size];
+
+  return (
+    <>
+      <motion.div
+        className={clsx('absolute -top-[2px] -left-[2px] rounded-tl-[20px] border-b-0 border-r-0', borderColor, sizeClass, className)}
+        animate={animated ? { borderColor: ['rgba(99,173,140,0.3)', 'rgba(99,173,140,0.7)', 'rgba(99,173,140,0.3)'] } : {}}
+        transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+        aria-hidden="true"
+      />
+      <motion.div
+        className={clsx('absolute -top-[2px] -right-[2px] rounded-tr-[20px] border-b-0 border-l-0', borderColor, sizeClass, className)}
+        animate={animated ? { borderColor: ['rgba(99,173,140,0.3)', 'rgba(99,173,140,0.7)', 'rgba(99,173,140,0.3)'] } : {}}
+        transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
+        aria-hidden="true"
+      />
+      <motion.div
+        className={clsx('absolute -bottom-[2px] -left-[2px] rounded-bl-[20px] border-t-0 border-r-0', borderColor, sizeClass, className)}
+        animate={animated ? { borderColor: ['rgba(99,173,140,0.3)', 'rgba(99,173,140,0.7)', 'rgba(99,173,140,0.3)'] } : {}}
+        transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
+        aria-hidden="true"
+      />
+      <motion.div
+        className={clsx('absolute -bottom-[2px] -right-[2px] rounded-br-[20px] border-t-0 border-l-0', borderColor, sizeClass, className)}
+        animate={animated ? { borderColor: ['rgba(99,173,140,0.3)', 'rgba(99,173,140,0.7)', 'rgba(99,173,140,0.3)'] } : {}}
+        transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut', delay: 1.8 }}
+        aria-hidden="true"
+      />
+    </>
+  );
+}
+
+export interface PulseRingProps {
+  size?: number;
+  color?: 'green' | 'cyan' | 'amber';
+  count?: number;
+  className?: string;
+}
+
+export function PulseRing({ size = 100, color = 'green', count = 2, className }: PulseRingProps) {
+  const colors = {
+    green: 'rgba(99, 173, 140, 0.3)',
+    cyan: 'rgba(32, 180, 134, 0.3)',
+    amber: 'rgba(184, 122, 0, 0.3)',
+  };
+
+  return (
+    <div className={clsx('relative', className)} style={{ width: size, height: size }}>
+      {[...Array(count)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute inset-0 rounded-full"
+          style={{ border: `1.5px solid ${colors[color]}` }}
+          initial={{ scale: 0.5, opacity: 0.4 }}
+          animate={{ scale: [0.5, 1.5], opacity: [0.4, 0] }}
+          transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.6, ease: 'easeOut' }}
+          aria-hidden="true"
+        />
+      ))}
+    </div>
+  );
+}
+
+export interface ProgressBarProps {
+  value: number;
+  max?: number;
+  color?: 'green' | 'cyan' | 'amber' | 'red';
+  className?: string;
+  animated?: boolean;
+}
+
+export function ProgressBar({ value, max = 100, color = 'green', className, animated = true }: ProgressBarProps) {
+  const percentage = Math.min((value / max) * 100, 100);
+  const colors = {
+    green: 'from-brand to-brand-light',
+    cyan: 'from-cyan-primary to-cyan-light',
+    amber: 'from-amber-primary to-amber-light',
+    red: 'from-red-primary to-red-light',
+  };
+
+  return (
+    <div className={clsx('h-1.5 bg-fg/10 rounded-full overflow-hidden', className)}>
+      <motion.div
+        initial={{ width: 0 }}
+        animate={animated ? { width: `${percentage}%` } : { width: `${percentage}%` }}
+        transition={{ duration: 1.2, delay: 0.3, ease: [0.25, 1, 0.5, 1] }}
+        className="h-full rounded-full"
+        style={{ background: `linear-gradient(90deg, ${colors[color].replace('to', '')})` }}
+      />
+    </div>
+  );
+}
+
+export { SplashScreen } from './SplashScreen';
