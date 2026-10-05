@@ -88,7 +88,7 @@ export function ScanStatus({ status, className }: ScanStatusProps) {
         <motion.p
           initial={{ opacity: 0, y: 5 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-fg-muted text-xs max-w-xs text-center"
+          className="max-w-[20rem] text-center text-xs text-fg-muted"
         >
           {config.subtext}
         </motion.p>

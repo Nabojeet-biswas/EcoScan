@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { clsx } from 'clsx';
 import { useEffect, useState } from 'react';
-import type { WasteDetection } from '../../services/detectionService';
+import type { WasteDetection } from '@/features/waste/types';
 
 interface DetectionOverlayProps {
   detection: WasteDetection | null;

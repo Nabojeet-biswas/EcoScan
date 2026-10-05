@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
 import { clsx } from 'clsx';
 import { CheckCircle2, XCircle, AlertTriangle, Leaf, Recycle, Trash2 } from 'lucide-react';
-import type { WasteDetection } from '../../services/detectionService';
-import { getBinColor } from '../../utils/wasteRules';
-import { GlassCard, CornerMarkers, PulseRing } from '../common/GlassCard';
+import type { WasteDetection } from '@/features/waste/types';
+import { getBinColor } from '@/features/waste/utils/wasteRules';
+import { GlassCard, CornerMarkers, PulseRing } from '@/components/common/GlassCard';
 
 interface RecyclingBinsProps {
   detection: WasteDetection;
@@ -39,9 +39,9 @@ export function RecyclingBins({
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        className="fixed bottom-4 lg:bottom-6 left-1/2 -translate-x-1/2 w-full max-w-md px-4 z-30"
+        className="fixed bottom-2 left-1/2 z-30 w-full max-w-[28rem] -translate-x-1/2 px-2 sm:bottom-4 sm:px-4 lg:bottom-6"
       >
-        <GlassCard variant="elevated" className="p-6 lg:p-8 border-amber-primary/20">
+        <GlassCard variant="elevated" className="border-amber-primary/20 p-3 sm:p-6 lg:p-8">
           <CornerMarkers color="amber" className="opacity-30" />
           
           <div className="relative z-10 flex items-start gap-4">
@@ -95,9 +95,9 @@ export function RecyclingBins({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 30 }}
       transition={{ delay: 0.1, type: 'spring', stiffness: 400, damping: 35 }}
-      className="fixed bottom-4 lg:bottom-6 left-1/2 -translate-x-1/2 w-full max-w-5xl px-4 z-30"
+      className="fixed bottom-2 left-1/2 z-30 w-full max-w-5xl -translate-x-1/2 px-2 sm:bottom-4 sm:px-4 lg:bottom-6"
     >
-      <div className="grid grid-cols-3 gap-3 lg:gap-4">
+      <div className="grid grid-cols-3 gap-1.5 sm:gap-3 lg:gap-4">
         {binsConfig.map((bin, index) => {
           const color = getBinColor(bin.type);
           const isSelected = selectedBin === bin.type;
@@ -117,28 +117,33 @@ export function RecyclingBins({
               whileTap={!isSorting && !showResult ? { scale: 0.99 } : {}}
               className={clsx(
                 'relative group cursor-pointer',
-                isSelected && !showResult && 'ring-2 ring-offset-2 ring-offset-bg',
-                isSelected && !showResult && `ring-[${color}]`,
+                isSelected && !showResult && 'ring-2 ring-offset-2 ring-offset-white',
               )}
+              style={
+                isSelected && !showResult
+                  ? { boxShadow: `0 0 0 2px ${color}, 0 0 30px ${color}33` }
+                  : undefined
+              }
             >
               <motion.button
                 disabled={isSorting || showResult}
                 onClick={() => !isSorting && !showResult && onBinSelect(bin.type)}
                 className={clsx(
                   'w-full aspect-square relative rounded-[20px] overflow-hidden transition-all duration-300',
-                  'flex flex-col items-center justify-center p-5 lg:p-6',
-                  isSelected && !showResult 
-                    ? `bg-[${color}]05 border-2 border-[${color}] shadow-[0_0_30px_${color}20]`
+                  'flex aspect-[4/3] min-h-24 flex-col items-center justify-center p-1.5 sm:aspect-square sm:p-5 lg:p-6',
+                  isSelected && !showResult
+                    ? 'border-2'
                     : 'bg-bg-surface border border-line hover:border-line-strong hover:bg-fg/5',
                   showResult && isCorrectBin
-                    ? 'bg-green-primary/5 border-2 border-green-primary shadow-[0_0_30px_rgba(32,180,134,0.2)]'
+                    ? 'border-2 border-emerald-500/60 bg-emerald-500/5 shadow-[0_0_30px_rgba(16,185,129,0.2)]'
                     : showResult && isWrongSelection
-                    ? 'bg-red-primary/5 border-2 border-red-primary'
-                    : ''
+                    ? 'border-2 border-red-500/60 bg-red-500/5'
+                    : '',
                 )}
                 style={{
-                  backgroundColor: isSelected && !showResult ? `${color}05` : undefined,
+                  backgroundColor: isSelected && !showResult ? `${color}15` : undefined,
                   borderColor: isSelected && !showResult ? color : undefined,
+                  boxShadow: isSelected && !showResult ? `0 0 30px ${color}33` : undefined,
                 }}
                 tabIndex={0}
                 onKeyDown={(e) => {
@@ -152,28 +157,26 @@ export function RecyclingBins({
                   <motion.span
                     animate={isSelected && !showResult ? { scale: [1, 1.05, 1] } : showCheck ? { scale: [1, 1.15, 1] } : {}}
                     transition={{ duration: showCheck ? 0.6 : 2, repeat: showCheck ? 0 : Infinity, ease: 'easeInOut' }}
-                    className="text-5xl lg:text-6xl mb-3 filter drop-shadow-lg"
+                    className="mb-1 text-3xl filter drop-shadow-lg sm:mb-3 sm:text-5xl lg:text-6xl"
                     aria-hidden="true"
                   >
-                    <bin.icon className="w-10 h-10 lg:w-12 lg:h-12 text-[${color}]" aria-hidden="true" />
+                    <bin.icon className="h-7 w-7 sm:h-10 sm:w-10 lg:h-12 lg:w-12" style={{ color }} aria-hidden="true" />
                   </motion.span>
-                  
+
                   <motion.h4
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className={clsx(
-                      'font-display text-lg lg:text-xl font-normal text-fg',
-                      isSelected && `text-[${color}]`
-                    )}
+                    className="break-words font-display text-[0.6rem] font-normal leading-tight text-fg sm:text-lg lg:text-xl"
+                    style={isSelected ? { color } : undefined}
                   >
                     {bin.label}
                   </motion.h4>
-                  
+
                   <motion.p
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="text-fg-muted text-sm mt-1 max-w-xs text-center"
+                    className="mt-1 hidden max-w-[20rem] text-center text-xs text-fg-muted sm:block sm:text-sm"
                   >
                     {bin.desc}
                   </motion.p>
@@ -182,10 +185,12 @@ export function RecyclingBins({
                 <motion.div
                   animate={isSelected && !showResult ? { scale: [1, 1.02, 1], opacity: [0.15, 0.35, 0.15] } : {}}
                   transition={{ duration: 3, repeat: Infinity }}
-                  className={clsx(
-                    'absolute inset-0 rounded-[20px] pointer-events-none',
-                    isSelected && !showResult && `bg-gradient-to-br from-transparent via-[${color}]20 to-transparent`
-                  )}
+                  className="absolute inset-0 rounded-[20px] pointer-events-none"
+                  style={
+                    isSelected && !showResult
+                      ? { background: `linear-gradient(135deg, transparent, ${color}22, transparent)` }
+                      : undefined
+                  }
                 />
 
                 {isSelected && !showResult && (
@@ -193,7 +198,7 @@ export function RecyclingBins({
                     initial={{ opacity: 0, scale: 0.8, y: 10 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                    className="absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-full text-xs font-medium text-bg"
+                    className="absolute bottom-1 left-1/2 -translate-x-1/2 rounded-full px-2 py-1 text-[0.55rem] font-medium text-bg sm:bottom-4 sm:px-3 sm:py-1.5 sm:text-xs"
                     style={{ backgroundColor: color }}
                   >
                     DROP HERE
@@ -205,9 +210,9 @@ export function RecyclingBins({
                     initial={{ opacity: 0, scale: 0, rotate: -180 }}
                     animate={{ opacity: 1, scale: 1, rotate: 0 }}
                     transition={{ type: 'spring', stiffness: 500, damping: 25 }}
-                    className="absolute inset-0 flex items-center justify-center bg-green-primary/10"
+                    className="absolute inset-0 flex items-center justify-center bg-emerald-500/10"
                   >
-                    <CheckCircle2 className="w-14 h-14 text-green-primary filter drop-shadow-lg" aria-hidden="true" />
+                    <CheckCircle2 className="w-14 h-14 text-emerald-500 filter drop-shadow-lg" aria-hidden="true" />
                   </motion.div>
                 )}
 
@@ -216,9 +221,9 @@ export function RecyclingBins({
                     initial={{ opacity: 0, scale: 0, rotate: 180 }}
                     animate={{ opacity: 1, scale: 1, rotate: 0 }}
                     transition={{ type: 'spring', stiffness: 500, damping: 25 }}
-                    className="absolute inset-0 flex items-center justify-center bg-red-primary/10"
+                    className="absolute inset-0 flex items-center justify-center bg-red-500/10"
                   >
-                    <XCircle className="w-14 h-14 text-red-primary filter drop-shadow-lg" aria-hidden="true" />
+                    <XCircle className="w-14 h-14 text-red-500 filter drop-shadow-lg" aria-hidden="true" />
                   </motion.div>
                 )}
 
@@ -236,7 +241,7 @@ export function RecyclingBins({
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 }}
-                      className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-primary/10 border border-green-primary/20 text-green-primary text-xs font-medium"
+                      className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-xs font-medium"
                     >
                       <CheckCircle2 className="w-4 h-4" aria-hidden="true" />
                       Correct Bin
@@ -249,7 +254,7 @@ export function RecyclingBins({
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-primary/10 border border-red-primary/20 text-red-primary text-xs font-medium"
+                    className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-medium"
                   >
                     <XCircle className="w-4 h-4" aria-hidden="true" />
                     Try {binsConfig.find(b => b.type === correctBin)?.label} Bin

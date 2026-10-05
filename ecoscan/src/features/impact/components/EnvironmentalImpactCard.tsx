@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import { Leaf, Globe, Trash2, Recycle, Clock, AlertTriangle, Zap } from 'lucide-react';
-import { GlassCard, CornerMarkers, ProgressBar } from './common/GlassCard';
+import { GlassCard, CornerMarkers, ProgressBar } from '@/components/common/GlassCard';
 import { clsx } from 'clsx';
-import type { WasteDetection } from '../services/detectionService';
+import type { WasteDetection } from '@/features/waste/types';
 
 interface EnvironmentalImpactCardProps {
   detection: WasteDetection;

@@ -1,9 +1,12 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { clsx } from 'clsx';
 import { X, Clock, Globe, Leaf, Recycle, AlertTriangle, Zap, Shield } from 'lucide-react';
-import { GlassCard, Badge, Button, ProgressBar } from '../common/GlassCard';
-import type { WasteDetection } from '../../services/detectionService';
-import { getBinColor, getBinLabel, getBinIcon, getBinDescription } from '../../utils/wasteRules';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { GlassCard, ProgressBar } from '@/components/common/GlassCard';
+import type { WasteDetection } from '@/features/waste/types';
+import { getBinColor, getBinLabel, getBinIcon, getBinDescription } from '@/features/waste/utils/wasteRules';
 
 interface WasteInfoPanelProps {
   detection: WasteDetection;
@@ -33,7 +36,7 @@ function StatTile({ icon, label, value, color = 'green' }: { icon: React.ReactNo
     red: 'bg-red-primary/10',
   };
   return (
-    <div className="p-4 rounded-xl bg-fg/5 border border-line">
+    <div className="rounded-xl border border-line bg-fg/5 p-3 sm:p-4">
       <div className={clsx('w-10 h-10 rounded-lg flex items-center justify-center', colorMap[color])}>
         {icon}
       </div>
@@ -60,16 +63,12 @@ export function WasteInfoPanel({ detection, onClose, onSort, isMobile }: WasteIn
 
   if (isMobile) {
     return (
-      <AnimatePresence>
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 50 }}
-          transition={{ type: 'spring', stiffness: 400, damping: 35 }}
-          className="fixed bottom-0 left-0 right-0 z-40 max-h-[85vh] rounded-t-[22px]"
-          role="dialog"
-          aria-modal="true"
+      <Sheet open onOpenChange={(open) => { if (!open) onClose(); }}>
+        <SheetContent
+          side="bottom"
           aria-labelledby="waste-title"
+          showCloseButton={false}
+          className="max-h-[85vh] gap-0 overflow-hidden rounded-t-[22px] border-0 bg-bg p-0 shadow-none"
         >
           <div className="flex flex-col h-full bg-bg">
             <div className="flex items-center justify-center px-4 py-4 border-b border-line">
@@ -280,22 +279,19 @@ export function WasteInfoPanel({ detection, onClose, onSort, isMobile }: WasteIn
               </div>
             </GlassCard>
           </div>
-        </motion.div>
-      </AnimatePresence>
+        </SheetContent>
+      </Sheet>
     );
   }
 
   return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: 50 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 35 }}
-        className="fixed right-4 lg:right-6 top-20 bottom-20 z-40 w-80 lg:w-96"
-        role="dialog"
-        aria-modal="true"
+    <Sheet open onOpenChange={(open) => { if (!open) onClose(); }} modal={false}>
+      <SheetContent
+        side="right"
         aria-labelledby="waste-title"
+        showCloseButton={false}
+        overlayClassName="pointer-events-none bg-transparent backdrop-blur-0"
+        className="data-[side=right]:inset-y-16 data-[side=right]:right-2 data-[side=right]:h-auto data-[side=right]:w-[min(22rem,calc(100vw-1rem))] data-[side=right]:sm:right-4 data-[side=right]:sm:w-80 data-[side=right]:lg:right-6 data-[side=right]:lg:w-96 data-[side=right]:sm:max-w-none gap-0 overflow-hidden border-0 bg-transparent p-0 text-fg shadow-none"
       >
         <GlassCard variant="elevated" className="flex flex-col h-full relative">
           <div className="flex items-start justify-between p-4 lg:p-6 border-b border-line relative z-10">
@@ -496,7 +492,7 @@ export function WasteInfoPanel({ detection, onClose, onSort, isMobile }: WasteIn
             )}
           </div>
         </GlassCard>
-      </motion.div>
-    </AnimatePresence>
+      </SheetContent>
+    </Sheet>
   );
 }

@@ -1,6 +1,10 @@
 import { motion, type HTMLMotionProps, type TargetAndTransition, type VariantLabels } from 'framer-motion';
 import { forwardRef } from 'react';
 import { clsx } from 'clsx';
+import { Card } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
+
+const MotionCard = motion.create(Card);
 
 interface GlassCardProps extends Omit<HTMLMotionProps<'div'>, 'ref'> {
   variant?: 'default' | 'elevated' | 'subtle' | 'outlined';
@@ -19,109 +23,23 @@ export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
     };
 
     return (
-      <motion.div
+      <MotionCard
         ref={ref}
-        className={clsx(variants[variant], className)}
+        className={cn(
+          'block gap-0 overflow-visible rounded-[var(--radius-xl)] bg-transparent py-0 text-base ring-0',
+          variants[variant],
+          className
+        )}
         whileHover={whileHover}
         {...props}
       >
         {children}
-      </motion.div>
+      </MotionCard>
     );
   }
 );
 
 GlassCard.displayName = 'GlassCard';
-
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline';
-  size?: 'sm' | 'md' | 'lg' | 'xl';
-  isLoading?: boolean;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
-  fullWidth?: boolean;
-}
-
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = 'primary', size = 'md', isLoading, leftIcon, rightIcon, className, disabled, children, fullWidth, ...props }, ref) => {
-    const variants = {
-      primary: 'btn btn-primary',
-      secondary: 'btn btn-secondary',
-      ghost: 'btn btn-ghost',
-      danger: 'btn btn-danger',
-      outline: 'btn btn-outline',
-    };
-
-    const sizes = {
-      sm: 'btn-sm',
-      md: 'btn-md',
-      lg: 'btn-lg',
-      xl: 'btn-xl',
-    };
-
-    return (
-      <motion.button
-        ref={ref}
-        className={clsx(variants[variant], sizes[size], fullWidth && 'w-full', className)}
-        disabled={disabled || isLoading}
-        whileTap={{ scale: 0.98 }}
-        {...(props as Record<string, unknown>)}
-      >
-        {isLoading ? (
-          <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" fill="none" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-          </svg>
-        ) : leftIcon ? (
-          <span aria-hidden="true">{leftIcon}</span>
-        ) : null}
-        {children}
-        {!isLoading && rightIcon && <span aria-hidden="true">{rightIcon}</span>}
-      </motion.button>
-    );
-  }
-);
-
-Button.displayName = 'Button';
-
-interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: 'default' | 'success' | 'warning' | 'danger' | 'info' | 'ai';
-  size?: 'sm' | 'md' | 'lg';
-  dot?: boolean;
-  pulse?: boolean;
-  className?: string;
-}
-
-export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
-  ({ variant = 'default', size = 'md', dot, pulse, className, children, ...props }, ref) => {
-    const variants = {
-      default: 'badge badge-default',
-      success: 'badge badge-success',
-      warning: 'badge badge-warning',
-      danger: 'badge badge-danger',
-      info: 'badge badge-info',
-      ai: 'badge badge-ai',
-    };
-
-    const sizes = {
-      sm: 'badge-sm',
-      md: '',
-      lg: 'badge-lg',
-    };
-
-    return (
-      <span
-        ref={ref}
-        className={clsx(variants[variant], sizes[size], dot && 'badge-dot', pulse && 'animate-pulse-ring', className)}
-        {...props}
-      >
-        {children}
-      </span>
-    );
-  }
-);
-
-Badge.displayName = 'Badge';
 
 export interface ScanLineProps {
   className?: string;
