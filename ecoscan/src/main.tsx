@@ -1,10 +1,15 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "@/styles/index.css";
+import App from "./App.tsx";
+import { BrowserRouter } from "react-router";
+import { Toaster } from "@/components/ui/sonner";
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
+    <BrowserRouter>
+      <App />
+      <Toaster position="bottom-center" offset={16} mobileOffset={16} />
+    </BrowserRouter>
   </StrictMode>,
-)
+);

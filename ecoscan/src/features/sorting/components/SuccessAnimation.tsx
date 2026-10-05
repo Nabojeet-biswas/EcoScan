@@ -1,9 +1,11 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { clsx } from 'clsx';
 import { CheckCircle, XCircle, Sparkles, Shield, Recycle, Leaf } from 'lucide-react';
-import { GlassCard, Button } from '../common/GlassCard';
-import type { WasteDetection } from '../../services/detectionService';
-import { getBinLabel, getBinDescription } from '../../utils/wasteRules';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { GlassCard } from '@/components/common/GlassCard';
+import type { WasteDetection } from '@/features/waste/types';
+import { getBinLabel, getBinDescription } from '@/features/waste/utils/wasteRules';
 
 interface SuccessAnimationProps {
   detection: WasteDetection;
@@ -54,22 +56,18 @@ export function SuccessAnimation({ detection, isCorrect, pointsEarned, onContinu
   const binDesc = getBinDescription(detection.bin);
 
   return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-bg/90 backdrop-blur-sm"
-        role="dialog"
-        aria-modal="true"
+    <Dialog open onOpenChange={() => {}}>
+      <DialogContent
         aria-labelledby="result-title"
+        showCloseButton={false}
+        className="w-full max-w-[28rem] gap-0 border-0 bg-transparent p-0 text-fg ring-0 shadow-none sm:max-w-[28rem]"
       >
         <motion.div
           initial={{ scale: 0.94, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.94, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-          className="w-full max-w-md"
+          className="w-full max-w-[28rem]"
         >
           <GlassCard variant="elevated" className="p-6 lg:p-8 relative overflow-hidden">
             <div className="relative z-10 text-center">
@@ -115,7 +113,7 @@ export function SuccessAnimation({ detection, isCorrect, pointsEarned, onContinu
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: isCorrect ? 0.3 : 0.25 }}
-                className="text-fg-muted text-base mb-7 max-w-sm mx-auto leading-relaxed"
+                className="mx-auto mb-7 max-w-[24rem] text-base leading-relaxed text-fg-muted"
               >
                 {isCorrect 
                   ? `Excellent! ${detection.name} belongs in the ${binLabel.toLowerCase()} bin.`
@@ -193,7 +191,7 @@ export function SuccessAnimation({ detection, isCorrect, pointsEarned, onContinu
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.55 }}
-                className="grid grid-cols-3 gap-3 pt-4 border-t border-line"
+                className="grid grid-cols-1 gap-3 border-t border-line pt-4 sm:grid-cols-3"
               >
                 <div className="p-3 rounded-xl bg-fg/5 border border-line text-center">
                   <Recycle className="w-5 h-5 text-brand mx-auto mb-1" aria-hidden="true" />
@@ -229,7 +227,7 @@ export function SuccessAnimation({ detection, isCorrect, pointsEarned, onContinu
             </AnimatePresence>
           </GlassCard>
         </motion.div>
-      </motion.div>
-    </AnimatePresence>
+      </DialogContent>
+    </Dialog>
   );
 }

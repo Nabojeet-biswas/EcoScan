@@ -1,22 +1,6 @@
-import { analyzeWasteImage, type WasteAnalysisResult } from './geminiService';
-
-export interface WasteDetection {
-  name: string;
-  category: 'recyclable' | 'organic' | 'non-recyclable' | 'special';
-  material: string;
-  confidence: number;
-  bin: 'recyclable' | 'organic' | 'non-recyclable' | 'special';
-  decompositionTime: string;
-  description: string;
-  environmentalImpact: 'Low' | 'Medium' | 'High';
-  disposalMethod?: string;
-  boundingBox?: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-}
+import { analyzeWasteImage, type WasteAnalysisResult } from '@/features/waste/services/geminiService';
+import type { WasteDetection } from '@/features/waste/types';
+export type { WasteDetection };
 
 export interface DetectionResult {
   success: boolean;

@@ -1,6 +1,6 @@
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { clsx } from 'clsx';
-import type { WasteDetection } from '../../services/detectionService';
+import type { WasteDetection } from '@/features/waste/types';
 
 interface WasteObjectProps {
   detection: WasteDetection;
