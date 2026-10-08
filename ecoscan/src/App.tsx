@@ -4,6 +4,7 @@ import { SplashScreen } from "@/components/common/SplashScreen";
 import { LandingPage } from "@/pages/LandingPage";
 import { ScannerPage } from "./pages/ScannerPage";
 import { Feed } from "./pages/Feed";
+import { Settings } from "./pages/settings/Settings";
 import { Layout } from "@/components/Layout";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="/feed" element={<Feed />} />
             <Route path="/scanner" element={<ScannerPage />} />
           </Route>
+          <Route path="/settings/*" element={<Settings />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       )}

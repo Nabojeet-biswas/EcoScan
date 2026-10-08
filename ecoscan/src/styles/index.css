@@ -748,6 +748,16 @@
   background-size: 200% 100%;
 }
 
+@keyframes highlightFlash {
+  0% { background-color: transparent; }
+  20% { background-color: var(--color-brand-light); opacity: 0.15; }
+  100% { background-color: transparent; }
+}
+
+.animate-highlight-flash {
+  animation: highlightFlash 1.5s ease-out forwards;
+}
+
 @theme inline {
   --font-heading: var(--font-sans);
   --font-sans: 'Geist Variable', sans-serif;
@@ -859,4 +869,19 @@
   --sidebar-accent-foreground: var(--color-text-dark);
   --sidebar-border: var(--color-border-dark);
   --sidebar-ring: var(--color-focus-dark);
+}
+
+[data-toast-type="success"] {
+  background-color: var(--color-primary-dark);
+  color: var(--color-bg-dark);
+}
+
+[data-toast-type="error"] {
+  background-color: var(--color-error-dark);
+  color: var(--color-bg-dark);
+}
+
+[data-toast-type="info"] {
+  background-color: var(--color-primary-dark);
+  color: var(--color-bg-dark);
 }
