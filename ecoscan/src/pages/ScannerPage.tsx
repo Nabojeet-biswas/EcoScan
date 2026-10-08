@@ -9,7 +9,6 @@ import { GlassCard } from "../components/common/GlassCard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { Navbar } from "@/components/common/Navbar";
 import { CameraView } from "@/features/scanner/components/CameraView";
 import { ScanStatus } from "@/features/scanner/components/ScanStatus";
 import { WasteInfoPanel } from "@/features/waste/components/WasteInfoPanel";
@@ -23,6 +22,7 @@ import {
 } from "@/features/waste/services/detectionService";
 import { getBinForWaste } from "@/features/waste/utils/wasteRules";
 import type { WasteDetection } from "@/features/waste/types";
+import { useNavbarConfig } from "@/context/NavbarContext";
 
 type ScannerState =
   | "idle"
@@ -39,6 +39,7 @@ const POINTS_PER_CORRECT = 10;
 
 export function ScannerPage() {
   const navigate = useNavigate();
+  const { setConfig } = useNavbarConfig();
   const [state, setState] = useState<ScannerState>("idle");
   const [currentDetection, setCurrentDetection] =
     useState<WasteDetection | null>(null);
@@ -64,6 +65,21 @@ export function ScannerPage() {
   const errorToastId = useRef<string | number | null>(null);
 
   const mode = detectionService.getMode();
+
+  const handleStartScanning = useCallback(() => {
+    setState("idle");
+  }, []);
+
+  useEffect(() => {
+    setConfig({
+      onScanClick: handleStartScanning,
+      onHomeClick: () => navigate("/"),
+      ecoPoints,
+      showPoints: true,
+      onHistoryClick: () => setShowHistory(true),
+      isScannerPage: true,
+    });
+  }, [navigate, setConfig, ecoPoints, handleStartScanning, setShowHistory]);
 
   useEffect(() => {
     return () => {
@@ -109,10 +125,6 @@ export function ScannerPage() {
   const correctBin = currentDetection
     ? getBinForWaste(currentDetection.name)
     : "non-recyclable";
-
-  const handleStartScanning = useCallback(() => {
-    setState("idle");
-  }, []);
 
   const handleScan = useCallback(async () => {
     if (state !== "idle" && state !== "detected" && state !== "success") return;
@@ -248,21 +260,13 @@ export function ScannerPage() {
 
   return (
     <div className="min-h-screen bg-bg text-fg">
-      <Navbar
-        onScanClick={handleStartScanning}
-        onHomeClick={() => navigate("/")}
-        ecoPoints={ecoPoints}
-        showPoints
-        onHistoryClick={() => setShowHistory(true)}
-        isScannerPage
-      />
 
       <motion.section
         id="scanner"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="relative pt-20 pb-4 px-4"
+        className="relative pb-4 px-4"
       >
         <div className="section-container">
           <div className="grid lg:grid-cols-3 gap-6">
@@ -454,15 +458,13 @@ export function ScannerPage() {
                 >
                   Scan History
                 </h2>
-                <motion.button
+                <button
                   onClick={() => setShowHistory(false)}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="p-2 rounded-xl hover:bg-fg/10 text-fg-muted"
+                  className="p-2 rounded-xl text-fg-muted hover-solid"
                   aria-label="Close scan history"
                 >
                   <X className="w-5 h-5" />
-                </motion.button>
+                </button>
               </div>
               <div className="flex-1 overflow-y-auto">
                 {scanHistory.length === 0 ? (
@@ -480,7 +482,7 @@ export function ScannerPage() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.05 }}
-                        className="p-4 flex items-center gap-3 hover:bg-fg/5"
+                        className="p-4 flex items-center gap-3"
                       >
                         <div className="w-12 h-12 rounded-xl bg-fg/5 flex items-center justify-center text-2xl flex-shrink-0">
                           {

@@ -303,7 +303,7 @@ export function CameraView({
                 onClick={() => handleDemoSelect(obj.id)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="group p-4 rounded-xl bg-bg-elevated/50 border border-line hover:border-brand/30 hover:bg-bg-surface/50 transition-all text-left"
+                className="group p-4 rounded-xl bg-bg-elevated/50 border border-line hover:border-brand/30 hover-solid text-left"
               >
                 <div className="text-5xl mb-2 group-hover:scale-110 transition-transform">
                   {obj.icon}
@@ -616,7 +616,7 @@ export function CameraView({
                 onClick={() => handleDemoSelect(obj.id)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="group p-4 rounded-xl bg-bg-elevated/50 border border-line hover:border-brand/30 hover:bg-bg-surface/50 transition-all text-left"
+                className="group p-4 rounded-xl bg-bg-elevated/50 border border-line hover:border-brand/30 hover-solid text-left"
               >
                 <div className="text-5xl mb-2 group-hover:scale-110 transition-transform">
                   {obj.icon}

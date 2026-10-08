@@ -102,17 +102,13 @@ export function WasteInfoPanel({ detection, onClose, onSort, isMobile }: WasteIn
                     </motion.div>
                   </div>
                 </div>
-                <motion.button
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                <button
                   onClick={onClose}
-                  className="p-2 rounded-xl bg-fg/5 hover:bg-fg/10 transition-colors text-fg-muted flex-shrink-0"
+                  className="p-2 rounded-xl bg-fg/5 text-fg-muted hover-solid flex-shrink-0"
                   aria-label="Close panel"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
                 >
                   <X className="w-5 h-5" />
-                </motion.button>
+                </button>
               </div>
 
               <div className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-5 relative z-10">
@@ -316,17 +312,13 @@ export function WasteInfoPanel({ detection, onClose, onSort, isMobile }: WasteIn
                 </motion.div>
               </div>
             </div>
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
+            <button
               onClick={onClose}
-              className="p-2 rounded-xl bg-fg/5 hover:bg-fg/10 transition-colors text-fg-muted flex-shrink-0"
+              className="p-2 rounded-xl bg-fg/5 text-fg-muted hover-solid flex-shrink-0"
               aria-label="Close panel"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
             >
               <X className="w-5 h-5" />
-            </motion.button>
+            </button>
           </div>
 
           <div className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-5 relative z-10">

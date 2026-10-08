@@ -30,7 +30,7 @@ export function SettingsMenu() {
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger
-        className="p-2 rounded-xl glass text-fg-muted hover:text-fg hover:bg-white/10 dark:hover:bg-black/10 transition-transform hover:scale-105 active:scale-95"
+        className="p-2 rounded-xl glass text-fg-muted hover-solid transition-transform hover:scale-105 active:scale-95"
         aria-label="Settings"
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -57,10 +57,10 @@ export function SettingsMenu() {
                   setIsOpen(false);
                 }}
                 className={cn(
-                  'w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors',
+                  'w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium hover-solid',
                   theme === value
-                    ? 'bg-brand/10 text-brand focus:bg-brand/10 focus:text-brand'
-                    : 'text-fg hover:bg-white/10 focus:bg-white/10 focus:text-fg dark:hover:bg-black/10 dark:focus:bg-black/10'
+                    ? 'bg-brand/10 text-brand'
+                    : 'text-fg'
                 )}
                 role="menuitemradio"
                 aria-checked={theme === value}
@@ -88,7 +88,7 @@ export function SettingsMenu() {
               window.location.search = '?splash=1';
               window.location.reload();
             }}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-fg-muted hover:text-fg hover:bg-white/10 focus:bg-white/10 focus:text-fg dark:hover:bg-black/10 dark:focus:bg-black/10 transition-colors"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-fg-muted hover-solid"
           >
             <svg className="size-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />

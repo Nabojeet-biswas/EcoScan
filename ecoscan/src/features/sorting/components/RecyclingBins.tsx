@@ -79,7 +79,7 @@ export function RecyclingBins({
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
             onClick={() => onBinSelect('special')}
-            className="mt-6 w-full py-3 px-4 rounded-xl bg-amber-primary/10 border border-amber-primary/20 text-amber-primary font-medium flex items-center justify-center gap-2 transition-colors hover:bg-amber-primary/20"
+            className="mt-6 w-full py-3 px-4 rounded-xl bg-amber-primary/10 border border-amber-primary/20 text-amber-primary font-medium flex items-center justify-center gap-2 hover-solid"
           >
             <CheckCircle2 className="w-5 h-5" aria-hidden="true" />
             I Understand — Mark as Special Disposal
@@ -133,7 +133,7 @@ export function RecyclingBins({
                   'flex aspect-[4/3] min-h-24 flex-col items-center justify-center p-1.5 sm:aspect-square sm:p-5 lg:p-6',
                   isSelected && !showResult
                     ? 'border-2'
-                    : 'bg-bg-surface border border-line hover:border-line-strong hover:bg-fg/5',
+                    : 'bg-bg-surface border border-line hover-solid',
                   showResult && isCorrectBin
                     ? 'border-2 border-emerald-500/60 bg-emerald-500/5 shadow-[0_0_30px_rgba(16,185,129,0.2)]'
                     : showResult && isWrongSelection
